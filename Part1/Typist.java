@@ -17,7 +17,12 @@ public class Typist
     // Another tracks whether the typist is currently burnt out.
     // A third tracks HOW MANY turns of burnout remain (not just whether they are burnt out).
     // The remaining three should be fairly obvious.
-    
+    private String name;
+    private char symbol;
+    private int progress;
+    private boolean burntOut;
+    private int burnoutRemaining;
+    private double accuracy;
 
 
 
@@ -32,7 +37,12 @@ public class Typist
      */
     public Typist(char typistSymbol, String typistName, double typistAccuracy)
     {
-
+        this.symbol = typistSymbol;
+        this.name = typistName;
+        this.accuracy = typistAccuracy;
+        this.progress = 0;
+        this.burntOut = false;
+        this.burnoutRemaining = 0;
     }
 
 
@@ -46,7 +56,8 @@ public class Typist
      */
     public void burnOut(int turns)
     {
-
+        burntOut = true;
+        burnoutRemaining = turns;
     }
 
     /**
@@ -56,7 +67,13 @@ public class Typist
      */
     public void recoverFromBurnout()
     {
+        if (burntOut) {
+            burnoutRemaining--;
 
+            if (burnoutRemaining == 0) {
+                burntOut = false;
+            }
+        }
     }
 
     /**
@@ -66,7 +83,7 @@ public class Typist
      */
     public double getAccuracy()
     {
-        return 0.0; // placeholder - replace with correct implementation
+        return accuracy; // placeholder - replace with correct implementation
     }
 
     /**
@@ -78,7 +95,7 @@ public class Typist
      */
     public int getProgress()
     {
-        return 0; // placeholder - replace with correct implementation
+        return progress; // placeholder - replace with correct implementation
     }
 
     /**
@@ -88,7 +105,7 @@ public class Typist
      */
     public String getName()
     {
-        return ""; // placeholder - replace with correct implementation
+        return name; // placeholder - replace with correct implementation
     }
 
     /**
@@ -98,7 +115,7 @@ public class Typist
      */
     public char getSymbol()
     {
-        return ' '; // placeholder - replace with correct implementation
+        return symbol; // placeholder - replace with correct implementation
     }
 
     /**
@@ -109,7 +126,7 @@ public class Typist
      */
     public int getBurnoutTurnsRemaining()
     {
-        return 0; // placeholder - replace with correct implementation
+        return burnoutRemaining; // placeholder - replace with correct implementation
     }
 
     /**
@@ -118,7 +135,9 @@ public class Typist
      */
     public void resetToStart()
     {
-
+        progress = 0;
+        burntOut = false;
+        burnoutRemaining = 0;
     }
 
     /**
@@ -128,7 +147,7 @@ public class Typist
      */
     public boolean isBurntOut()
     {
-        return false; // placeholder - replace with correct implementation
+        return burntOut; // placeholder - replace with correct implementation
     }
 
     /**
@@ -137,7 +156,7 @@ public class Typist
      */
     public void typeCharacter()
     {
-
+        progress++;
     }
 
     /**
@@ -148,7 +167,11 @@ public class Typist
      */
     public void slideBack(int amount)
     {
-
+        if ((progress - amount) < 0) {
+            progress = 0;
+        } else {
+            progress = progress - amount;
+        }
     }
 
     /**
@@ -159,7 +182,13 @@ public class Typist
      */
     public void setAccuracy(double newAccuracy)
     {
-
+        if (newAccuracy < 0) {
+            accuracy = 0;
+        } else if (newAccuracy > 1) {
+            accuracy = 1;
+        } else {
+            accuracy = newAccuracy;
+        }
     }
 
     /**
@@ -169,7 +198,7 @@ public class Typist
      */
     public void setSymbol(char newSymbol)
     {
-
+        symbol = newSymbol;
     }
 
 }
