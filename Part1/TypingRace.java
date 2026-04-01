@@ -131,7 +131,7 @@ public class TypingRace
         winner.setAccuracy(winner.getAccuracy() + (winner.getAccuracy() * BASE_ACCURACY_MULTIPLIER * 2));
         System.out.println();
         System.out.println("And the winner is... " + winner.getName() + "!");
-        System.out.println("Final accuracy: " + winner.getAccuracy() + "(improved from " + oldAccuracy + ")");
+        System.out.println("Final accuracy: " + String.format("%.2f", winner.getAccuracy()) + " (improved from " + oldAccuracy + ")");
 
     }
 
@@ -268,19 +268,19 @@ public class TypingRace
         if (theTypist.isBurntOut())
         {
             System.out.print(theTypist.getName()
-                + " (Accuracy: " + theTypist.getAccuracy() + ")"
+                + " (Accuracy: " + String.format("%.2f", theTypist.getAccuracy()) + ")"
                 + " BURNT OUT (" + theTypist.getBurnoutTurnsRemaining() + " turns)");
         }
         else if (theTypist.hasJustMistyped())
         {
             System.out.print(theTypist.getName()
-                + " (Accuracy: " + theTypist.getAccuracy() + ")"
+                + " (Accuracy: " + String.format("%.2f", theTypist.getAccuracy()) + ")"
                 + " ← just mistyped");
         }
         else
         {
             System.out.print(theTypist.getName()
-                + " (Accuracy: " + theTypist.getAccuracy() + ")");
+                + " (Accuracy: " + String.format("%.2f", theTypist.getAccuracy()) + ")");
         }
     }
 
