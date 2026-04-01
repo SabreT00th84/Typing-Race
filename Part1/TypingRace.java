@@ -24,6 +24,7 @@ public class TypingRace
     private static final double MISTYPE_BASE_CHANCE = 0.3;
     private static final int    SLIDE_BACK_AMOUNT   = 2;
     private static final int    BURNOUT_DURATION     = 3;
+    private static final double BASE_ACCURACY_MULTIPLIER = 0.05;
 
     /**
      * Constructor for objects of class TypingRace.
@@ -76,6 +77,8 @@ public class TypingRace
      */
     public void startRace()
     {
+        Typist winner = null;
+        double oldAccuracy;
         boolean finished = false;
 
         // Reset all typists to the start of the passage
@@ -106,7 +109,25 @@ public class TypingRace
             } catch (Exception e) {}
         }
 
-        // TODO (Task 2a): Print the winner's name here
+        if (raceFinishedBy(seat1Typist))
+        {
+            winner = seat1Typist;
+        }
+        else if (raceFinishedBy(seat2Typist))
+        {
+            winner = seat2Typist;
+        }
+        else if (raceFinishedBy(seat3Typist))
+        {
+            winner = seat3Typist;
+        }
+
+        oldAccuracy = winner.getAccuracy();
+        winner.setAccuracy(winner.getAccuracy() + (winner.getAccuracy() * BASE_ACCURACY_MULTIPLIER * 2));
+        System.out.println();
+        System.out.println("And the winner is... " + winner.getName() + "!");
+        System.out.println("Final accuracy: " + winner.getAccuracy() + "(improved from " + oldAccuracy + ")");
+
     }
 
     /**
@@ -148,6 +169,7 @@ public class TypingRace
         if (Math.random() < 0.05 * theTypist.getAccuracy() * theTypist.getAccuracy())
         {
             theTypist.burnOut(BURNOUT_DURATION);
+            theTypist.setAccuracy(theTypist.getAccuracy() - (theTypist.getAccuracy() * BASE_ACCURACY_MULTIPLIER));
         }
     }
 
