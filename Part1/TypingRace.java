@@ -24,7 +24,7 @@ public class TypingRace
     private static final double MISTYPE_BASE_CHANCE = 0.3;
     private static final int    SLIDE_BACK_AMOUNT   = 2;
     private static final int    BURNOUT_DURATION     = 3;
-    private static final double BASE_ACCURACY_MULTIPLIER = 0.05;
+    private static final double BASE_ACCURACY_MULTIPLIER = 0.02;
 
     /**
      * Constructor for objects of class TypingRace.
