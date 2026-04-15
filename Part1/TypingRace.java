@@ -9,8 +9,8 @@ import java.lang.Math;
  * two-finger technique". He assured us the code was "basically done".
  * We have found evidence to the contrary.
  *
- * @author TyPosaurus
- * @version 0.7 (the other 0.3 is left as an exercise for the reader)
+ * @author Eeas Adam (adapted from TyPosaurus)
+ * @version 1
  */
 public class TypingRace
 {
@@ -20,8 +20,7 @@ public class TypingRace
     private Typist seat3Typist;
 
     // Accuracy thresholds for mistype and burnout events
-    // (Ty tuned these values "by feel". They may need adjustment.)
-    private static final double MISTYPE_BASE_CHANCE = 0.3;
+    private static final double MISTYPE_BASE_CHANCE = 0.3; // Chance of a mistype when a typist's accuracy is 0
     private static final int    SLIDE_BACK_AMOUNT   = 2;
     private static final int    BURNOUT_DURATION     = 3;
     private static final double BASE_ACCURACY_MULTIPLIER = 0.02;
@@ -71,9 +70,6 @@ public class TypingRace
      * Starts the typing race.
      * All typists are reset to the beginning, then the simulation runs
      * turn by turn until one typist completes the full passage.
-     *
-     * Note from Ty: "I didn't bother printing the winner at the end,
-     * you can probably figure that out yourself."
      */
     public void startRace()
     {
@@ -82,7 +78,6 @@ public class TypingRace
         boolean finished = false;
 
         // Reset all typists to the start of the passage
-        // (Ty was in a hurry here)
         seat1Typist.resetToStart();
         seat2Typist.resetToStart();
         seat3Typist.resetToStart();
@@ -186,7 +181,6 @@ public class TypingRace
      */
     private boolean raceFinishedBy(Typist theTypist)
     {
-        // Ty was confident this condition was correct
         if (theTypist.getProgress() >= passageLength)
         {
             return true;
@@ -230,9 +224,6 @@ public class TypingRace
      * Examples:
      *   |          ⌨           | TURBOFINGERS (Accuracy: 0.85)
      *   |    [~]              | HUNT_N_PECK  (Accuracy: 0.40) BURNT OUT (2 turns)
-     *
-     * Note: Ty forgot to show when a typist has just mistyped. That would
-     * be a nice improvement — perhaps a [<] marker after their symbol.
      *
      * @param theTypist the typist whose lane to print
      */

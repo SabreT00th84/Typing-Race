@@ -6,17 +6,12 @@
  * He left a sticky note: "the slide-back thing is optional probably".
  * It is not optional. Good luck.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Eesa Adam
+ * @version 1
  */
 public class Typist
 {
     // Fields of class Typist
-    // Hint: you will need six fields. Think carefully about their types.
-    // One of them tracks how far along the passage the typist has reached.
-    // Another tracks whether the typist is currently burnt out.
-    // A third tracks HOW MANY turns of burnout remain (not just whether they are burnt out).
-    // The remaining three should be fairly obvious.
     private String name;
     private char symbol;
     private int progress;
