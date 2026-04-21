@@ -63,8 +63,9 @@ public class SetupView extends View {
 
         Spinner<Integer> numOfTypists = new Spinner<>(2, 6, 2);
 
-        CheckBox autocorrect = new CheckBox("Autocorrect (Reduces slideback amount)");
-        CheckBox caffeine = new CheckBox("Caffeine (Increased speed for first half of the race)");
+        CheckBox autocorrect = new CheckBox("Autocorrect (Halves slideback amount)");
+        CheckBox caffeine = new CheckBox("Caffeine (Increased speed for first 10 turns" +
+                " of the race with increased burnout risk)");
         CheckBox night = new CheckBox("Night Shift (Reduced Accuracy)");
 
         Button submitButton = new Button("Next");
