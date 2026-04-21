@@ -14,11 +14,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        SetupView setupView = new SetupView();
+        Navigator navigator = new Navigator();
+        SetupView setupView = new SetupView(navigator);
+        navigator.navigateTo(setupView);
         Scene scene = new Scene(setupView.getBody(), 1000, 500);
         scene.rootProperty().bind(Bindings.createObjectBinding(
-                () -> setupView.getCurrentViewProperty().get().build(),
-           setupView.getCurrentViewProperty()
+                () -> navigator.getView().getBody(),
+           navigator.getCurrentViewProperty()
         ));
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -1,7 +1,8 @@
 package Part2.Views;
 
 import Part2.Models.RaceConfig;
-import Part2.NavigationView;
+import Part2.Navigator;
+import Part2.View;
 import Part2.ViewModels.SetupViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
@@ -9,17 +10,21 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
-public class SetupView extends NavigationView {
-
+public class SetupView extends View {
     private SetupViewModel viewModel;
+    private Navigator navigator;
+
+    public SetupView(Navigator navigator) {
+        super(navigator);
+    }
 
     /**
      *
      */
     @Override
     protected void init(Object... o) {
-        super.init();
         viewModel = new SetupViewModel();
+        navigator = (Navigator) o[0];
     }
 
     @Override
@@ -59,7 +64,7 @@ public class SetupView extends NavigationView {
         Spinner<Integer> numOfTypists = new Spinner<>(2, 6, 2);
 
         CheckBox autocorrect = new CheckBox("Autocorrect (Reduces slideback amount)");
-        CheckBox caffeine = new CheckBox("Caffeine (Increased accuracy for first half of race but decreased for second half)");
+        CheckBox caffeine = new CheckBox("Caffeine (Increased speed for first half of the race)");
         CheckBox night = new CheckBox("Night Shift (Reduced Accuracy)");
 
         Button submitButton = new Button("Next");
@@ -67,13 +72,13 @@ public class SetupView extends NavigationView {
                 () -> viewModel.passageStrings.containsKey(viewModel.selected.get()),
                 viewModel.selected, viewModel.passageStrings
         ));
-        submitButton.setOnAction(e -> switchView(new SetupTypistsView(new RaceConfig(
+        submitButton.setOnAction(e -> navigator.navigateTo(new SetupTypistsView(new RaceConfig(
                 preview.getText(),
                 numOfTypists.getValue(),
                 autocorrect.isSelected(),
                 caffeine.isSelected(),
                 night.isSelected()
-        ))));
+        ), navigator)));
 
         VBox vBox = new VBox(5,
                 new Label("Select Passage"),
