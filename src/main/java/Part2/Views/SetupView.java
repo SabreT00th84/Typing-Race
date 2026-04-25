@@ -30,34 +30,34 @@ public class SetupView extends View {
     @Override
     protected Parent build() {
         ComboBox<String> passagePicker = new ComboBox<>();
-        passagePicker.getItems().addAll(viewModel.passageStrings.keySet());
-        passagePicker.valueProperty().bindBidirectional(viewModel.selected);
+        passagePicker.getItems().addAll(viewModel.getPassageKeys());
+        passagePicker.valueProperty().bindBidirectional(viewModel.getSelectedProperty());
         passagePicker.setEditable(true);
 
-        TextArea preview = new TextArea(viewModel.passageStrings.get(viewModel.selected.get()));
+        TextArea preview = new TextArea(viewModel.getPassage(viewModel.getSelected()));
         preview.setWrapText(true);
         preview.editableProperty().bind(Bindings.createBooleanBinding(
-                () -> !viewModel.passageStrings.containsKey(viewModel.selected.get()),
-                viewModel.selected
+                () -> !viewModel.passagesContainsKey(viewModel.getSelected()),
+                viewModel.getSelectedProperty()
         ));
-        viewModel.selected.addListener(((observable, oldValue, newValue) -> {
-            String fromMap = viewModel.passageStrings.get(newValue);
+        viewModel.getSelectedProperty().addListener(((observable, oldValue, newValue) -> {
+            String fromMap = viewModel.getPassage(newValue);
             if (fromMap != null) {
                 preview.setText(fromMap);
             } else {
-                preview.textProperty().bindBidirectional(viewModel.text);
+                preview.textProperty().bindBidirectional(viewModel.getTextProperty());
             }
         }));
 
         Button addPassageButton = new Button("Add");
         addPassageButton.visibleProperty().bind(Bindings.createBooleanBinding(
-                () -> !viewModel.passageStrings.containsKey(viewModel.selected.get()),
-                viewModel.selected, viewModel.passageStrings
+                () -> !viewModel.passagesContainsKey(viewModel.getSelected()),
+                viewModel.getSelectedProperty(), viewModel.getPassagesProperty()
         ));
         addPassageButton.setOnAction(e -> {
             if (viewModel.addPassage(preview.getText())) {
-                passagePicker.getItems().add(viewModel.selected.get());
-                preview.setText(viewModel.passageStrings.get(viewModel.selected.get()));
+                passagePicker.getItems().add(viewModel.getSelected());
+                preview.setText(viewModel.getPassage(viewModel.getSelected()));
             }
         });
 
@@ -70,8 +70,8 @@ public class SetupView extends View {
 
         Button submitButton = new Button("Next");
         submitButton.visibleProperty().bind(Bindings.createBooleanBinding(
-                () -> viewModel.passageStrings.containsKey(viewModel.selected.get()),
-                viewModel.selected, viewModel.passageStrings
+                () -> viewModel.passagesContainsKey(viewModel.getSelected()),
+                viewModel.getSelectedProperty(), viewModel.getPassagesProperty()
         ));
         submitButton.setOnAction(e -> navigator.navigateTo(new SetupTypistsView(new RaceConfig(
                 preview.getText(),
