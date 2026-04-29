@@ -10,10 +10,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 
 public class RaceView extends View {
 
@@ -21,7 +21,6 @@ public class RaceView extends View {
 
     public RaceView(Typist[] typists, boolean autocorrect, String passage) {
         super(typists, autocorrect, passage);
-        viewModel.startRace();
     }
 
     @Override
@@ -35,9 +34,12 @@ public class RaceView extends View {
         vbox.setPadding(new Insets(10));
 
         VBox progressSection = new VBox(2.5);
+        TextFlow passage = new TextFlow(viewModel.getPassageAsTextNodes());
+        passage.setStyle("-fx-border-color: black; -fx-border-width: 1px; -fx-border-style: solid;");
+        passage.setPadding(new Insets(5));
 
         for (Typist typist : viewModel.getTypists()) {
-            HBox typistLane = new HBox(2.5, new Label(typist.getName()));
+            HBox typistLane = new HBox(2.5);
 
             StackPane progress = new StackPane();
             progress.setAlignment(Pos.CENTER_LEFT);
@@ -51,22 +53,51 @@ public class RaceView extends View {
             ));
             progressBar.setStyle("-fx-accent: " + typist.getColour());
 
-            Label symbol = new Label(typist.getEmojiSymbol());
+            Label symbol = new Label(typist.getSymbol());
             symbol.translateXProperty().bind(Bindings.createDoubleBinding(
                     () -> (progressBar.getProgress() * progressBar.getWidth()),
                     progressBar.progressProperty(), progressBar.widthProperty()
             ));
+
             progress.getChildren().addAll(progressBar, symbol);
 
             Label info = new Label();
-            typistLane.getChildren().add(progress);
+            info.textProperty().bind(Bindings.createStringBinding(
+                    () -> "      (Accuracy: " + String.format("%.2f", typist.getAccuracy()) +
+                            ", Speed: " + typist.getSpeed() + ") ",
+                    typist.getSpeedBoostProperty(), typist.getAccuracyBoostProperty()
+            ));
+
+            Label burnout = new Label();
+            burnout.textProperty().bind(Bindings.createStringBinding(
+                    () -> "BURNT OUT (" + typist.getBurnoutTurnsRemaining() + " turns)",
+                    typist.getBurnoutRemainingProperty()
+            ));
+            burnout.visibleProperty().bind(typist.getBurntOutProperty());
+
+            Label mistyped = new Label("← just mistyped");
+            mistyped.visibleProperty().bind(typist.getJustMistypedProperty());
+
+            typistLane.getChildren().addAll(new Label(typist.getName()), progress, info, burnout, mistyped);
             progressSection.getChildren().add(typistLane);
+
+            typist.getProgressProperty().addListener(
+                    (observable, oldValue, newValue) ->
+                        viewModel.updateTypistCursorPosition(newValue.intValue() + 1, typist, passage)
+                    );
         }
 
-        vbox.getChildren().add(progressSection);
+        vbox.getChildren().addAll(progressSection, passage);
 
         ScrollPane scrollPane = new ScrollPane(vbox);
         scrollPane.setFitToWidth(true);
+
+        scrollPane.sceneProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        Thread.startVirtualThread(viewModel::startRaceGUI);
+                    }
+                });
 
         return scrollPane;
     }
