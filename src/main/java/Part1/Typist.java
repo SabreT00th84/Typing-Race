@@ -2,7 +2,6 @@ package Part1;
 
 /**
  * Write a description of class Typist here.
- *
  * Starter code generously abandoned by Ty Posaurus, your predecessor,
  * who typed with two fingers and considered that "good enough".
  * He left a sticky note: "the slide-back thing is optional probably".
@@ -20,7 +19,7 @@ public class Typist
     private boolean burntOut;
     private int burnoutRemaining;
     private double accuracy;
-    private boolean justMistypyed;
+    private boolean justMistyped;
 
 
 
@@ -41,7 +40,7 @@ public class Typist
         this.progress = 0;
         this.burntOut = false;
         this.burnoutRemaining = 0;
-        this.justMistypyed = false;
+        this.justMistyped = false;
     }
 
 
@@ -137,7 +136,7 @@ public class Typist
         progress = 0;
         burntOut = false;
         burnoutRemaining = 0;
-        justMistypyed = false;
+        justMistyped = false;
     }
 
     /**
@@ -167,7 +166,7 @@ public class Typist
      */
     public void slideBack(int amount)
     {
-        justMistypyed = true;
+        justMistyped = true;
         if ((progress - amount) < 0) {
             progress = 0;
         } else {
@@ -203,11 +202,11 @@ public class Typist
     }
 
     /**
-     * Sets the typists status to just mistyped
+     * Sets the typist's status to just mistyped
      */
     public boolean hasJustMistyped()
     {
-        return justMistypyed;
+        return justMistyped;
     }
 
     /**
@@ -215,6 +214,6 @@ public class Typist
      */
     public void resetMistype()
     {
-        justMistypyed = false;
+        justMistyped = false;
     } 
 }
