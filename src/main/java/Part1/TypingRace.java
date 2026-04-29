@@ -6,7 +6,6 @@ import java.lang.Math;
 /**
  * A typing race simulation. Three typists race to complete a passage of text,
  * advancing character by character — or sliding backwards when they mistype.
- *
  * Originally written by Ty Posaurus, who left this project to "focus on his
  * two-finger technique". He assured us the code was "basically done".
  * We have found evidence to the contrary.
@@ -134,7 +133,6 @@ public class TypingRace
 
     /**
      * Simulates one turn for a typist.
-     *
      * If the typist is burnt out, they recover one turn's worth and skip typing.
      * Otherwise:
      *   - They may type a character (advancing progress) based on their accuracy.
@@ -151,27 +149,23 @@ public class TypingRace
         {
             // Recovering from burnout — skip this turn
             theTypist.recoverFromBurnout();
-            return;
         }
-
-        // Attempt to type a character
-        if (Math.random() < theTypist.getAccuracy())
-        {
-            theTypist.typeCharacter();
-        }
-
         // Mistype check — the probability should reflect the typist's accuracy
-        if (Math.random() < (1 - theTypist.getAccuracy()) * MISTYPE_BASE_CHANCE)
+        else if (Math.random() < (1 - theTypist.getAccuracy()) * MISTYPE_BASE_CHANCE)
         {
             theTypist.slideBack(SLIDE_BACK_AMOUNT);
         }
-
         // Burnout check — pushing too hard increases burnout risk
         // (probability scales with accuracy squared, capped at ~0.05)
-        if (Math.random() < 0.05 * theTypist.getAccuracy() * theTypist.getAccuracy())
+        else if (Math.random() < 0.05 * theTypist.getAccuracy() * theTypist.getAccuracy())
         {
             theTypist.burnOut(BURNOUT_DURATION);
             theTypist.setAccuracy(theTypist.getAccuracy() - (theTypist.getAccuracy() * BASE_ACCURACY_MULTIPLIER));
+        }
+        // Attempt to type a character
+        else
+        {
+            theTypist.typeCharacter();
         }
     }
 
@@ -222,7 +216,6 @@ public class TypingRace
 
     /**
      * Prints a single typist's lane.
-     *
      * Examples:
      *   |          ⌨           | TURBOFINGERS (Accuracy: 0.85)
      *   |    [~]              | HUNT_N_PECK  (Accuracy: 0.40) BURNT OUT (2 turns)
@@ -250,7 +243,7 @@ public class TypingRace
         if (theTypist.hasJustMistyped())
         {
             System.out.print('<');
-            spacesAfter--; // symbol + < together take two characters
+            spacesAfter--; // symbol + < together takes two characters
         }
 
         multiplePrint(' ', spacesAfter);
