@@ -187,7 +187,11 @@ public class Typist {
     }
 
     public void addCoins(int coins) {
-        this.coins += coins;
+        if (this.coins + coins >= 0) {
+            this.coins += coins;
+        } else {
+            this.coins = 0;
+        }
     }
 
     public boolean spendCoins(int coins) {
