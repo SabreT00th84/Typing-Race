@@ -5,9 +5,12 @@ Object Oriented Programming Project — ECS414U
 ## Project Structure
 
 ```
-TypingRaceSimulator/
+TypingRaceSimulator/src/main/java/
 ├── Part1/    # Textual simulation (Java, command-line)
-└── Part2/    # GUI simulation (to be completed)
+└── Part2/    # GUI simulation
+    ├── Models # Classes holding data
+    ├── ViewModels # Coordinators between GUI and Models
+    └── Views # JavaFX GUI Views
 ```
 
 ## Part 1 — Textual Simulation
@@ -42,13 +45,21 @@ java TypingRace
 
 ## Part 2 — GUI Simulation
 
-To be implemented as part of the coursework. Place all GUI-related source files in this folder. The graphical version is started by calling `startRaceGUI()`.
+### How to run
+Part 2 uses the Maven build system to manage dependencies. There is no need to compile manually when
+using maven. The Application will open automatically when the following command is run:
+
+```bash
+./mvnw javafx:run
+```
+
+The `startRaceGUI()` method can be found in the Main class and is called from `public static main(String[] args)`
 
 ## Dependencies
 
-- Java Development Kit (JDK) 11 or higher
+- Java Development Kit (JDK) 21 or higher
 - No external libraries required for Part 1
-- Part 2 may use Java Swing (included in standard JDK) or JavaFX
+- JavaFX 21 or higher
 
 ## Notes
 
