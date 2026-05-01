@@ -18,8 +18,8 @@ TypingRaceSimulator/src/main/java/
 ### How to compile
 
 ```bash
-cd Part1
-javac Typist.java TypingRace.java
+cd src/main/java
+javac Part1/Typist.java Part1/TypingRace.java
 ```
 
 ### How to run
@@ -37,17 +37,25 @@ public static void main(String[] args) {
 }
 ```
 
-Then run:
+You must add this method before compiling. Then run:
 
 ```bash
-java TypingRace
+java Part1/TypingRace
+```
+
+Alternatively you can compile the Testing class which already contains a main function that starts a race.
+
+```bash
+javac Part1/Testing.java
+java Part1/Testing
 ```
 
 ## Part 2 — GUI Simulation
 
 ### How to run
 Part 2 uses the Maven build system to manage dependencies. There is no need to compile manually when
-using maven. The Application will open automatically when the following command is run:
+using maven. The Application will open automatically when the following command is run from the root of the 
+project:
 
 ```bash
 ./mvnw javafx:run
