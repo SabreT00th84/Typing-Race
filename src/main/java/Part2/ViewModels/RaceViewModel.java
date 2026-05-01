@@ -121,17 +121,19 @@ public class RaceViewModel {
             } catch (Exception ignored) {}
         }
 
-        Platform.runLater(() -> raceFinished.set(true));
-        postRaceActions();
-        Platform.runLater(() -> showRaceStats.set(true));
+        Platform.runLater(() -> {
+            raceFinished.set(true);
+            postRaceActions();
+            showRaceStats.set(true);
+        });
     }
 
     private void addRaceStat(Typist typist, int position) {
         int wpm = (int) Math.round(passage.split(" ").length / (typist.getTimeTaken() / 60));
         double accuracy = (double) (passage.length() - typist.getNumberOfMistypes()) / passage.length();
         double accuracyChange = typist.getBaseAccuracy() - startingAccuracies.get(typist);
-        int points = (int) Math.round((double) ((appState.getTypists().size() - position - 1) * wpm)
-                / typist.getNumberOfBurnouts());
+        int points = (int) ((double) ((appState.getTypists().size() - position + 1) * wpm)
+                / (typist.getNumberOfBurnouts() + 1));
 
         typist.addRaceStat(new RaceStat(
                 position,
@@ -141,6 +143,24 @@ public class RaceViewModel {
                 accuracyChange,
                 points
         ));
+    }
+
+    private void payCoins(Typist typist, int position) {
+        int coins = 10 * (appState.getTypists().size() - position + 1);
+
+        if (typist.getLastRaceStat().wpm() >= 200) {
+            coins += 100;
+        }
+
+        if (typist.getLastRaceStat().numOfBurnouts() > 0) {
+            coins -= 25;
+        }
+
+        if (typist.isSponsored() && typist.getLastRaceStat().numOfBurnouts() == 0) {
+            coins += 50;
+        }
+
+        typist.addCoins(coins);
     }
 
     public void awardTypist(Typist typist) {
@@ -161,6 +181,7 @@ public class RaceViewModel {
 
         for (int i = 0; i < appState.getTypists().size(); i++) {
             addRaceStat(appState.getTypists().get(i), i + 1);
+            payCoins(appState.getTypists().get(i), i + 1);
             awardTypist(appState.getTypists().get(i));
             appState.getTypists().get(i).reset();
         }

@@ -144,6 +144,7 @@ public class RaceView extends View {
                             (stat.typistAccuracyChange() >= 0 ? "+" : "") +
                             String.format("%.2f", stat.typistAccuracyChange() * 100) + "%"
                     );
+                    Label points = new Label("Points Earned: " + stat.pointsEarned());
 
                     stats.getChildren().addAll(
                             heading,
@@ -152,7 +153,8 @@ public class RaceView extends View {
                             numOfBurnout,
                             prevAccuracy,
                             newAccuracy,
-                            accuracyChange
+                            accuracyChange,
+                            points
                     );
                 }
             }
@@ -162,6 +164,7 @@ public class RaceView extends View {
         vbox.getChildren().add(stats);
 
         Button back = new Button("Main Menu");
+        back.visibleProperty().bind(viewModel.getRaceFinishedProperty());
         back.setOnAction(e -> navigator.navigateTo(new MainMenuView(appState, navigator)));
 
         vbox.getChildren().add(back);
