@@ -47,7 +47,7 @@ public class FinLeaderboardView extends View {
             row.getChildren().addAll(
                     new Label("Rank: " + i),
                     new Label("Name: " + typist.getName()),
-                    new Label("Points: " + typist.getCoins())
+                    new Label("Coins: " + typist.getCoins())
             );
 
             vbox.getChildren().add(row);
